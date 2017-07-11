@@ -8,3 +8,10 @@
 */
 
 #define MAX_UNSIGNED_LONG 4294967295
+
+#include "Arduino.h"
+#ifndef LONG_MESSAGES
+typedef byte MESSAGE_INT;
+#else
+typedef word MESSAGE_INT;
+#endif

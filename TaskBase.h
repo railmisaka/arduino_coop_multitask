@@ -10,6 +10,9 @@
 #ifndef __TASK_BASE_H__
 #define __TASK_BASE_H__
 
+#include "Arduino.h"
+#include "MessagesQueue.h"
+
 class TaskBase
 {	
 public:

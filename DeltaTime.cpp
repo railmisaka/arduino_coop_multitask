@@ -6,7 +6,7 @@
     @author railmisaka
     @version 0.1 7/10/17 
 */
-
+//#define TIME_SERIAL_LOGGING
 #include "Arduino.h"
 
 #include "DeltaTime.h"
@@ -18,6 +18,10 @@ DeltaTime::DeltaTime()
 : stepTime(0)
 {
   prevTime = millis();
+
+  #ifdef TIME_SERIAL_LOGGING
+  Serial.begin(9600);
+  #endif
 }
 
 DeltaTime* DeltaTime::getInstance()
@@ -33,7 +37,7 @@ DeltaTime* DeltaTime::getInstance()
 void DeltaTime::loop()
 {
   unsigned long tmp = millis();
-
+  
   // overflow protection
   if(tmp < prevTime)
   {
@@ -43,9 +47,13 @@ void DeltaTime::loop()
   {
     stepTime = tmp - prevTime;
   }
-
+  
   //
-	prevTime = tmp;
+  prevTime = tmp;
+
+  #ifdef TIME_SERIAL_LOGGING
+  Serial.println(stepTime);
+  #endif
 }
 	
 unsigned long DeltaTime::getDeltaTime()

@@ -10,6 +10,8 @@
 #ifndef __DELTA_TIME_H__
 #define __DELTA_TIME_H__
 
+#include "MessagesQueue.h"
+
 class DeltaTime
 {
 private:

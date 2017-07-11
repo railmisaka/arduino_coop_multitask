@@ -9,6 +9,7 @@
 
 #include "TaskDispatcher.h"
 #include "DeltaTime.h"
+#include "MessagesQueue.h"
 
 // ========================================
 // TASK DISPATCHER
@@ -57,6 +58,9 @@ void TaskDispatcher::setup(bool early_time_start)
 
 void TaskDispatcher::loop()
 {
+  // swap messages queues
+  MessagesQueue::getInstance()->SwapQueue();
+  
   // refresh time delta
   DeltaTime::getInstance()->loop();
 

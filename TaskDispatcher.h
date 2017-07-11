@@ -18,15 +18,17 @@ class TaskList;
 class TaskDispatcher
 {
 private:
-  static TaskDispatcher *instance;
   TaskDispatcher();
 
-  TaskList *tasks;
+  TaskList *tasks;  // registeres tasks
+  
+  static TaskDispatcher *instance;
 
 public:
   // singlethon
   static TaskDispatcher* getInstance();
 
+public:
   void Register(TaskBase *task);
   void Unregister(TaskBase *task);
 
