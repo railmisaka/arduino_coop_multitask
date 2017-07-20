@@ -4,7 +4,7 @@
     MIT License
 
     @author railmisaka
-    @version 0.1 7/11/17 
+    @version 0.11 7/20/17 
 */
 
 #include "MessagesQueue.h"
@@ -13,7 +13,7 @@
 // MESSAGE
 // ========================================
 
-Message::Message(MESSAGE_INT c, void *v)
+Message::Message(MESSAGE_INT c, MessageDataBase *v)
 : code(c), value(v), next(nullptr)
 {}
 
@@ -66,5 +66,4 @@ void MessagesQueue::SwapQueue()
   prevQueue = actualQueueBegin;
   actualQueueBegin = actualQueueEnd = nullptr;
 }
-
 

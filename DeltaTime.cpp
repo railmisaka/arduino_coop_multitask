@@ -4,9 +4,9 @@
     MIT License
 
     @author railmisaka
-    @version 0.1 7/10/17 
+    @version 0.11 7/20/17 
 */
-//#define TIME_SERIAL_LOGGING
+
 #include "Arduino.h"
 
 #include "DeltaTime.h"
@@ -18,10 +18,6 @@ DeltaTime::DeltaTime()
 : stepTime(0)
 {
   prevTime = millis();
-
-  #ifdef TIME_SERIAL_LOGGING
-  Serial.begin(9600);
-  #endif
 }
 
 DeltaTime* DeltaTime::getInstance()
@@ -50,13 +46,10 @@ void DeltaTime::loop()
   
   //
   prevTime = tmp;
-
-  #ifdef TIME_SERIAL_LOGGING
-  Serial.println(stepTime);
-  #endif
 }
 	
 unsigned long DeltaTime::getDeltaTime()
 {
 	return stepTime;
 }
+

@@ -4,7 +4,7 @@
     MIT License
 
     @author railmisaka
-    @version 0.1 7/10/17 
+    @version 0.11 7/20/17 
 */
 
 #ifndef __TASK_DISPATCHER_H__
@@ -18,15 +18,18 @@ class TaskList;
 class TaskDispatcher
 {
 private:
-  TaskDispatcher();
+  // registered tasks
+  TaskBase *tasks_first;
+  TaskBase *tasks_last;
 
-  TaskList *tasks;  // registeres tasks
-  
+// singlethon
+private:
+  TaskDispatcher();
   static TaskDispatcher *instance;
 
 public:
-  // singlethon
   static TaskDispatcher* getInstance();
+//
 
 public:
   void Register(TaskBase *task);
@@ -36,31 +39,5 @@ public:
   void loop();
 };
 
-class TasksListElement
-{
-public:
-  TasksListElement(TaskBase *t);
-  TaskBase *task;
-  TasksListElement *next;
-};
-
-class TaskList
-{
-public:
-  TaskList();
-  ~TaskList();
-  
-private:
-  TasksListElement *first;
-  TasksListElement *last;
-  
-public:
-  void PushBack(TaskBase *task);
-  void PushFront(TaskBase *task);
-
-  void Remove(TaskBase *task);
-
-  TasksListElement* First();
-};
-
 #endif
+

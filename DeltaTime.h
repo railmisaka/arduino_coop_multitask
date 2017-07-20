@@ -4,7 +4,7 @@
     MIT License
 
     @author railmisaka
-    @version 0.1 7/10/17 
+    @version 0.11 7/20/17 
 */
 
 #ifndef __DELTA_TIME_H__
@@ -32,3 +32,4 @@ public:
 };
 
 #endif
+

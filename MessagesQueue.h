@@ -1,17 +1,17 @@
 /**
     Created 11 July 2017
-    DeltaTime.h
+    MessagesQueue.h
     MIT License
 
     @author railmisaka
-    @version 0.1 7/11/17 
+    @version 0.11 7/20/17 
 */
 
 #ifndef __MESSAGES_QUEUE_H__
 #define __MESSAGES_QUEUE_H__
 
 #include "CustomTypes.h"
-
+#include "MessageDataBase.h"
 
 class MessagesQueue;  // forward
 
@@ -20,11 +20,11 @@ class Message
   friend class MessagesQueue;
   
 public:
-  Message(MESSAGE_INT c, void *v);
+  Message(MESSAGE_INT c, MessageDataBase *v);
   ~Message();
 
   const MESSAGE_INT code;
-  const void *value;
+  const MessageDataBase *value;
   
 private:
   Message *next;  // list element
@@ -36,7 +36,7 @@ class TaskDispatcher; // forward
 
 class MessagesQueue
 {
-  friend class TaskDispatcher;
+friend class TaskDispatcher;
 
 private:
   MessagesQueue();
@@ -60,3 +60,4 @@ private:
 };
 
 #endif
+
