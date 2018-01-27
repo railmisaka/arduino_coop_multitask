@@ -1,11 +1,5 @@
 #### Cooperative multitasking for Arduino.
 
-Overhead:
-```
-Flash: 1446 	RAM: 23     (just library)
-Flash: 1554 	RAM: 33     (one empty task)
-```
-
 You need to copy files to your project folder.
 Library files:
 * _CustomTypes.h_
