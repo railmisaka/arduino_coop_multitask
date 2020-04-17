@@ -1,101 +1,89 @@
-/**
-    Created 10 July 2017
-    TaskDispatcher.cpp
-    MIT License
-
-    @author railmisaka
-    @version 0.11 7/20/17 
-*/
+// ACM
+// Created by railmisaka (railmisaka@gmail.com)
 
 #include "TaskDispatcher.h"
 #include "DeltaTime.h"
-#include "MessagesQueue.h"
-
-// ========================================
-// TASK DISPATCHER
-// ========================================
+#include "Messages.h"
+#include "Timers.h"
 
 TaskDispatcher* TaskDispatcher::instance = nullptr;
-TaskDispatcher::TaskDispatcher()
-: tasks_first(nullptr), tasks_last(nullptr)
+
+TaskDispatcher::TaskDispatcher() :
+	tasks_first( nullptr ), tasks_last( nullptr )
 {}
 
-TaskDispatcher* TaskDispatcher::getInstance()
+TaskDispatcher* TaskDispatcher::GetInstance()
 {
-  if(!instance)
-  {
-    instance = new TaskDispatcher();
-  }
-
-  return instance;
+	if( !instance ) {
+		instance = new TaskDispatcher();
+	}
+	return instance;
 }
 
-void TaskDispatcher::Register(TaskBase *task)
+void TaskDispatcher::Register( TaskBase *task )
 {
-  task->next = nullptr;
-  
-  if(tasks_last)
-  {
-    tasks_last->next = task;
-  }
-  else
-  {
-    tasks_last = task;
-  }
+	task->next = nullptr;
+
+	if( tasks_last ) {
+		tasks_last->next = task;
+	} else {
+		tasks_first = task;
+		tasks_last = task;
+	}
 }
 
-void TaskDispatcher::Unregister(TaskBase *task)
+void TaskDispatcher::Unregister( TaskBase *task )
 {
-  if(tasks_first == task)
-  {
-    tasks_first = tasks_first->next;
-    return;
-  }
-  
-  TaskBase *current = tasks_first->next;
-  TaskBase *prev = tasks_first;
-  while(current)
-  {
-    if(current == task)
-    {
-      prev->next = current->next;
-      return;
-    }
-    prev = current;
-    current = current->next;
-  }
+	if( tasks_first == task ) {
+		tasks_first = tasks_first->next;
+		return;
+	}
+
+	TaskBase *current = tasks_first->next;
+	TaskBase *prev = tasks_first;
+	while( current ) {
+		if( current == task ) {
+			prev->next = current->next;
+			return;
+		}
+
+		prev = current;
+		current = current->next;
+	}
 }
 
-void TaskDispatcher::setup(bool early_time_start)
+void TaskDispatcher::Setup( bool skipSetupTime )
 {
-  TaskBase *current = tasks_first;
-  while(current)
-  {
-    current->setup();
-    current = current->next;
-  }
+	TaskBase *current = tasks_first;
+	while( current ) {
+		current->Setup();
+		current = current->next;
+	}
 
-  if(early_time_start)
-  {
-    DeltaTime::getInstance();
-  }
+	// Skip time for initialization
+	// Initialize to start time calculation
+	if( skipSetupTime ) {
+		DeltaTime::GetInstance();
+	}
 }
 
-void TaskDispatcher::loop()
+void TaskDispatcher::Loop()
 {
-  // swap messages queues
-  MessagesQueue::getInstance()->SwapQueue();
-  
-  // refresh time delta
-  DeltaTime::getInstance()->loop();
+	// swap messages queues
+	MessagesQueue::GetInstance()->SwapQueue();
 
-  unsigned long time_delta = DeltaTime::getInstance()->getDeltaTime();
+	// refresh time delta
+	DeltaTime::GetInstance()->Loop();
 
-   TaskBase *current = tasks_first;
-  while(current)
-  {
-    current->loop(time_delta);
-    current = current->next;
-  }
+	// refresh timers
+	TimersDispatcher::GetInstance()->Loop( DeltaTime::GetInstance() );
+
+	TaskBase *current = tasks_first;
+	while( current ) {
+		if( !current->IsSuspended() ) {
+			current->Loop( DeltaTime::GetInstance() );
+		}
+
+		current = current->next;
+	}
 }
-

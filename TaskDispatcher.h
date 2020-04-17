@@ -1,42 +1,31 @@
-/**
-    Created 10 July 2017
-    TaskDispatcher.cpp
-    MIT License
+// ACM
+// Created by railmisaka (railmisaka@gmail.com)
 
-    @author railmisaka
-    @version 0.11 7/20/17 
-*/
+// Dispatcher for manage all tasks
 
 #ifndef __TASK_DISPATCHER_H__
 #define __TASK_DISPATCHER_H__
 
-#include "TaskBase.h"
-
-// forward
-class TaskList;
+#include "Tasks.h"
 
 class TaskDispatcher
 {
-private:
-  // registered tasks
-  TaskBase *tasks_first;
-  TaskBase *tasks_last;
-
-// singlethon
-private:
-  TaskDispatcher();
-  static TaskDispatcher *instance;
-
 public:
-  static TaskDispatcher* getInstance();
-//
+	static TaskDispatcher* GetInstance();
 
-public:
-  void Register(TaskBase *task);
-  void Unregister(TaskBase *task);
+	void Register( TaskBase *task );
+	void Unregister( TaskBase *task );
 
-  void setup(bool early_time_start = false);
-  void loop();
+	void Setup( bool skipSetupTime = true );
+	void Loop();
+
+private:
+	TaskDispatcher();
+	static TaskDispatcher *instance;
+
+	// registered tasks
+	TaskBase *tasks_first;
+	TaskBase *tasks_last;
 };
 
 #endif
