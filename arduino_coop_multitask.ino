@@ -1,5 +1,5 @@
 #include "TaskDispatcher.h"
-#include "DeltaTime.h"
+#include "MessagesTypes.h"
 
 void setup()
 {
@@ -8,16 +8,15 @@ void setup()
   // (your tasks must be inherited from TaskBase)
   
   // dispatcher initialization
-  TaskDispatcher::getInstance()->setup(false);
+  TaskDispatcher::GetInstance()->Setup();
   
   // your init code
-  
 }
 
 void loop()
 {
   // dispatcher loop
-  TaskDispatcher::getInstance()->loop();
+  TaskDispatcher::GetInstance()->Loop();
   
   // your main loop code
   // you can use DeltaTime (singlethon) here
