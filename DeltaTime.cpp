@@ -1,55 +1,43 @@
-/**
-    Created 10 July 2017
-    DeltaTime.cpp
-    MIT License
-
-    @author railmisaka
-    @version 0.11 7/20/17 
-*/
+// ACM
+// Created by railmisaka (railmisaka@gmail.com)
 
 #include "Arduino.h"
 
 #include "DeltaTime.h"
 #include "CustomTypes.h"
+#include "Debug.h"
 
 DeltaTime* DeltaTime::instance = nullptr;
 
-DeltaTime::DeltaTime()
-: stepTime(0)
+DeltaTime::DeltaTime() :
+	stepTime( 0UL )
 {
-  prevTime = millis();
+	prevTime = millis();
 }
 
-DeltaTime* DeltaTime::getInstance()
+DeltaTime* DeltaTime::GetInstance()
 {
-  if(instance == nullptr)
-  {
-    instance = new DeltaTime();
-  }
-
-  return instance;
+	if( instance == nullptr ) {
+		instance = new DeltaTime();
+	}
+	return instance;
 }
 
-void DeltaTime::loop()
+void DeltaTime::Loop()
 {
-  unsigned long tmp = millis();
-  
-  // overflow protection
-  if(tmp < prevTime)
-  {
-    stepTime = (MAX_UNSIGNED_LONG - prevTime) + tmp;
-  }
-  else
-  {
-    stepTime = tmp - prevTime;
-  }
-  
-  //
-  prevTime = tmp;
+	tTime tmp = millis();
+
+	// overflow protection
+	if( tmp < prevTime ) {
+		stepTime = (MAX_UNSIGNED_LONG - prevTime) + tmp;
+	} else {
+		stepTime = tmp - prevTime;
+	}
+
+	prevTime = tmp;
 }
 	
-unsigned long DeltaTime::getDeltaTime()
+tTime DeltaTime::GetDeltaTime() const
 {
 	return stepTime;
 }
-

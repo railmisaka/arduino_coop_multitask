@@ -1,35 +1,28 @@
-/**
-    Created 10 July 2017
-    DeltaTime.h
-    MIT License
+// ACM
+// Created by railmisaka (railmisaka@gmail.com)
 
-    @author railmisaka
-    @version 0.11 7/20/17 
-*/
+// Time delta between frames
 
 #ifndef __DELTA_TIME_H__
 #define __DELTA_TIME_H__
 
-#include "MessagesQueue.h"
+#include "Common.h"
 
 class DeltaTime
 {
-private:
-  static DeltaTime *instance;
-  DeltaTime();
-  
-private:
-	unsigned long prevTime;
-	unsigned long stepTime;
-	
 public:
-  // singlethon
-  static DeltaTime* getInstance();
+	static DeltaTime* GetInstance();
 
-	void loop();
-	
-	unsigned long getDeltaTime();
+	void Loop();
+
+	tTime GetDeltaTime() const;
+
+private:
+	DeltaTime();
+	static DeltaTime *instance;
+
+	tTime prevTime;
+	tTime stepTime;
 };
 
 #endif
-
