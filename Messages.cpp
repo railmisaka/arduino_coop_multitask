@@ -6,7 +6,7 @@
 MessagesQueue* MessagesQueue::instance = nullptr;
 
 SimpleMessage::SimpleMessage( MESSAGE_INT c ) :
-	next( nullptr ), code( c )
+	code( c )
 {}
 
 CustomMessage::CustomMessage( MESSAGE_INT c, byte *v ) :

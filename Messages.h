@@ -11,32 +11,56 @@
 #define __MESSAGES_QUEUE_H__
 
 #include "CustomTypes.h"
+#include "Tools.h"
+
+// Messages enum
+#define MESSAGES_LIST enum MESSAGES_TYPES {
+#define MESSAGES_LIST_END };
+#define DECLARE_MESSAGE( MESSAGE ) MESSAGE,
+
 #include "MessagesTypes.h"
+
+#undef MESSAGES_LIST
+#undef MESSAGES_LIST_END
+#undef DECLARE_MESSAGE
+
+// Check messages count
+#ifndef LONG_MESSAGES
+	#if MESSAGES_TYPES_COUNT > 255
+		#error Too many messages in MESSAGES_TYPES
+	#endif
+#else
+	#if MESSAGES_TYPES_COUNT > 65535
+		#error Too many messages in MESSAGES_TYPES
+	#endif
+#endif
+
+// Helpers
+#define FOREACH_MESSAGES( a ) \
+	for( ConstIterator<SimpleMessage> iter = MessagesQueue::GetInstance()->GetConstIterator(); iter.Value(); iter.Next() ) {\
+		const SimpleMessage *a = iter.Value();
+
+#define FOREACH_END }
+
+#define ADD_SIMPLE_MESSAGE( CODE ) MessagesQueue::GetInstance()->PushMessageBack( new SimpleMessage( CODE ) );
+
+// Messages and Queue
 
 class TaskDispatcher;
 
 // message base class
-class SimpleMessage
+class SimpleMessage : public Iterable<SimpleMessage>
 {
 public:
 	SimpleMessage( MESSAGE_INT );
-	~SimpleMessage()
-	{
-		if( next ) {
-			delete next;
-		}
-	}
 
-	MESSAGE_INT Code()
+	MESSAGE_INT Code() const
 	{
 		return code;
 	}
 
 private:
-	SimpleMessage *next;
-
 	MESSAGE_INT code;
-	byte *value;
 
 	friend class MessagesQueue;
 };
@@ -49,9 +73,14 @@ public:
 	void PushMessageFront( SimpleMessage *m );
 	void PushMessageBack( SimpleMessage *m );
 
-	SimpleMessage* GetFirst()
+	Iterator<SimpleMessage> GetIterator()
 	{
-		return prevQueue;
+		return prevQueue->CreateIterator();
+	}
+
+	ConstIterator<SimpleMessage> GetConstIterator()
+	{
+		return prevQueue->CreateConstIterator();
 	}
 
 private:
@@ -59,7 +88,7 @@ private:
 	static MessagesQueue *instance;
 
 	SimpleMessage *actualQueueBegin;	// current step queue
-	SimpleMessage *actualQueueEnd;	// current step queue
+	SimpleMessage *actualQueueEnd;		// current step queue
 	SimpleMessage *prevQueue;			// prev step queue (for swap)
 
 	void SwapQueue();
@@ -78,7 +107,7 @@ public:
 		}
 	}
 
-	byte const* Value()
+	const byte* Value()
 	{
 		return value;
 	}
