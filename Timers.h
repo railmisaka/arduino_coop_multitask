@@ -29,17 +29,17 @@ class TimerBase
 {
 public:
 	TimerBase();
-	~TimerBase();
+	virtual ~TimerBase();
 
-	virtual void Stop();
-	virtual void Start();
-	virtual bool IsStopped();
+	void Stop();
+	void Start();
+	bool IsStopped();
 
-	virtual void Pause();
-	virtual void Resume();
-	virtual bool IsPaused();
+	void Pause();
+	void Resume();
+	bool IsPaused();
 
-	virtual bool IsActive();
+	bool IsActive();
 
 	virtual void Reset() {};
 

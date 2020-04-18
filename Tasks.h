@@ -17,9 +17,9 @@ public:
 	TaskBase();
 	virtual ~TaskBase() {}
 
-	virtual void Suspend();
-	virtual void Resume();
-	virtual bool IsSuspended();
+	void Suspend();
+	void Resume();
+	bool IsSuspended();
 
 protected:
 	virtual void Setup() {};
