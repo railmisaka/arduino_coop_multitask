@@ -1,34 +1,66 @@
 // ACM
 // Created by railmisaka (railmisaka@gmail.com)
 
+#include "Arduino.h"
+#include "Configuration.h"
+
 #ifndef __DEBUG_H__
 #define __DEBUG_H__
 
-#ifndef AVR
+#ifdef ACMDEBUG
 
-	#define INIT_DEBUG InitDebug();
-	extern void InitDebug();
+#define SERIAL_SPEED 9600
 
-	#include <stdio.h>
+#define DEBUG_PRINTLN( f_, ... ) { \
+		char __tmp[80]; \
+		sprintf( __tmp, (f_), ##__VA_ARGS__ ); \
+		__tmp[79] = '\0'; \
+		Serial.println( __tmp ); \
+	}
 
-	// not an arduino
-	#define DEBUG_PRINTF(f_, ...) printf((f_), __VA_ARGS__)
+#define DEBUG_PRINT( f_, ... ) { \
+		char __tmp[80]; \
+		sprintf( __tmp, (f_), ##__VA_ARGS__ ); \
+		__tmp[79] = '\0'; \
+		Serial.print( __tmp ); \
+	}
 
-	// Messages debug
-	#include "Messages.h"
-	#include <map>
-	#include <string>
-	extern std::map<int, std::string> MessagesMap;
+#define DEBUG_PRINTLN_STRING( STRING ) { \
+		Serial.println( STRING ); \
+	}
 
-	#define MESSAGE_CODE_TO_TEXT( CODE ) MessagesMap[CODE]
+#define DEBUG_PRINT_STRING( STRING ) { \
+		Serial.print( STRING ); \
+	}
+
+#define MESSAGE_CODE_TO_TEXT( CODE ) __ACMDebug.getStringByCode( CODE )
+
+#define DEBUG_SETUP __ACMDebug.Init();
+
+class ACMDebug
+{
+public:
+	ACMDebug();
+	void Init();
+
+	void addCodeString( int code, String string );
+	String getStringByCode( int code );
+
+private:
+	String *codesToStrings;
+};
+
+extern ACMDebug __ACMDebug;
 
 #else
-	// arduino
 
-	#define INIT_DEBUG
+#define DEBUG_SETUP
 
-	#define DEBUG_PRINTF(f_, ...)
+#define DEBUG_PRINTLN( f_, ... )
+#define DEBUG_PRINT( f_, ... )
+#define DEBUG_PRINTLN_STRING( STRING )
+#define DEBUG_PRINT_STRING( STRING )
+#define MESSAGE_CODE_TO_TEXT( CODE )
 
 #endif
-
 #endif
