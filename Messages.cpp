@@ -51,4 +51,11 @@ void MessagesQueue::SwapQueue()
 	delete prevQueue;
 	prevQueue = actualQueueBegin;
 	actualQueueBegin = actualQueueEnd = nullptr;
+
+#ifdef ACMDEBUG
+	FOREACH_MESSAGES( value )
+		DEBUG_PRINT( "MESSAGE -> " );
+		DEBUG_PRINTLN_STRING( MESSAGE_CODE_TO_TEXT( value->Code() ) )
+	FOREACH_END
+#endif
 }

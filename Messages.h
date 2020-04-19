@@ -7,19 +7,17 @@
 // In each step we read messages from previous step queue and write to current
 // SwapQueue have to be called before step begin
 
-#ifndef __MESSAGES_QUEUE_H__
-#define __MESSAGES_QUEUE_H__
+#ifndef __MESSAGES_H__
+#define __MESSAGES_H__
 
-#include "CustomTypes.h"
+#include "Common.h"
 #include "Tools.h"
 
 // Messages enum
 #define MESSAGES_LIST enum MESSAGES_TYPES {
 #define MESSAGES_LIST_END };
 #define DECLARE_MESSAGE( MESSAGE ) MESSAGE,
-
-#include "MessagesTypes.h"
-
+#include "MessagesConfiguration.h"
 #undef MESSAGES_LIST
 #undef MESSAGES_LIST_END
 #undef DECLARE_MESSAGE
@@ -37,9 +35,8 @@
 
 // Helpers
 #define FOREACH_MESSAGES( a ) \
-	for( ConstIterator<SimpleMessage> iter = MessagesQueue::GetInstance()->GetConstIterator(); iter.Value(); iter.Next() ) {\
-		const SimpleMessage *a = iter.Value();
-
+	for( ConstIterator<SimpleMessage> iter = MessagesQueue::GetInstance()->GetConstIterator(); iter.Value(); iter.Next() ) { \
+		const SimpleMessage* a = iter.Value();
 #define FOREACH_END }
 
 #define ADD_SIMPLE_MESSAGE( CODE ) MessagesQueue::GetInstance()->PushMessageBack( new SimpleMessage( CODE ) );
@@ -63,6 +60,26 @@ private:
 	MESSAGE_INT code;
 
 	friend class MessagesQueue;
+};
+
+class CustomMessage : public SimpleMessage
+{
+public:
+	CustomMessage( MESSAGE_INT, byte* );
+	~CustomMessage()
+	{
+		if( value ) {
+			delete value;
+		}
+	}
+
+	const byte* Value()
+	{
+		return value;
+	}
+
+private:
+	byte *value;
 };
 
 class MessagesQueue
@@ -94,26 +111,6 @@ private:
 	void SwapQueue();
 
 	friend class TaskDispatcher;
-};
-
-class CustomMessage : public SimpleMessage
-{
-public:
-	CustomMessage( MESSAGE_INT, byte* );
-	~CustomMessage()
-	{
-		if( value ) {
-			delete value;
-		}
-	}
-
-	const byte* Value()
-	{
-		return value;
-	}
-
-private:
-	byte *value;
 };
 
 #endif
