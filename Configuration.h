@@ -1,10 +1,10 @@
 // ACM
 // Created by railmisaka (railmisaka@gmail.com)
 
-#ifndef __CUSTOM_TYPES_H__
-#define __CUSTOM_TYPES_H__
+#ifndef __CONFIGURATION_H__
+#define __CONFIGURATION_H__
 
-#include "Arduino.h"
+//#define ACMDEBUG
 
 #ifndef LONG_MESSAGES
 	typedef byte MESSAGE_INT;
