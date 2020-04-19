@@ -6,10 +6,10 @@
 #ifndef __TASK_BASE_H__
 #define __TASK_BASE_H__
 
-#include "Arduino.h"
+#include "Common.h"
 #include "DeltaTime.h"
 
-#include "Debug.h"
+class TaskDispatcher;
 
 class TaskBase
 {
@@ -32,12 +32,33 @@ private:
 	friend class TaskDispatcher;
 };
 
-// This task register self.
+// This task register self
 class AutoTask : public TaskBase
 {
 public:
 	AutoTask();
 	virtual ~AutoTask();
+};
+
+// Dispatcher for manage all tasks
+class TaskDispatcher
+{
+public:
+	static TaskDispatcher* GetInstance();
+
+	void Register( TaskBase *task );
+	void Unregister( TaskBase *task );
+
+	void Setup( bool skipSetupTime = true );
+	void Loop();
+
+private:
+	TaskDispatcher();
+	static TaskDispatcher *instance;
+
+	// registered tasks
+	TaskBase *tasks_first;
+	TaskBase *tasks_last;
 };
 
 #endif

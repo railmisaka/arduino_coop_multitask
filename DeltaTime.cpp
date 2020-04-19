@@ -1,11 +1,8 @@
 // ACM
 // Created by railmisaka (railmisaka@gmail.com)
 
-#include "Arduino.h"
-
+#include "Common.h"
 #include "DeltaTime.h"
-#include "CustomTypes.h"
-#include "Debug.h"
 
 DeltaTime* DeltaTime::instance = nullptr;
 
