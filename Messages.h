@@ -10,13 +10,23 @@
 #ifndef __MESSAGES_H__
 #define __MESSAGES_H__
 
+// for visual studio
+#pragma warning( error : 4369 )
+
 #include "Common.h"
 #include "Tools.h"
 
+// Messages enum base type
+#ifndef LONG_MESSAGES
+	typedef byte MESSAGE_INT;
+#else
+	typedef word MESSAGE_INT;
+#endif
+
 // Messages enum
-#define MESSAGES_LIST enum MESSAGES_TYPES {
-#define MESSAGES_LIST_END };
-#define DECLARE_MESSAGE( MESSAGE ) MESSAGE,
+#define MESSAGES_LIST enum MESSAGE : MESSAGE_INT {
+#define MESSAGES_LIST_END DECLARE_MESSAGE( MESSAGES_TYPES_COUNT ) };
+#define DECLARE_MESSAGE( _MESSAGE ) _MESSAGE,
 #include "MessagesConfiguration.h"
 #undef MESSAGES_LIST
 #undef MESSAGES_LIST_END
@@ -24,13 +34,7 @@
 
 // Check messages count
 #ifndef LONG_MESSAGES
-	#if MESSAGES_TYPES_COUNT > 255
-		#error Too many messages in MESSAGES_TYPES
-	#endif
 #else
-	#if MESSAGES_TYPES_COUNT > 65535
-		#error Too many messages in MESSAGES_TYPES
-	#endif
 #endif
 
 // Helpers
@@ -43,9 +47,7 @@
 
 // Messages and Queue
 
-class TaskDispatcher;
-
-// message base class
+// Message base class
 class SimpleMessage : public Iterable<SimpleMessage>
 {
 public:
@@ -81,6 +83,8 @@ public:
 private:
 	byte *value;
 };
+
+class TaskDispatcher;
 
 class MessagesQueue
 {
