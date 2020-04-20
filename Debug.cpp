@@ -22,7 +22,6 @@ ACMDebug::ACMDebug()
 	#undef DECLARE_MESSAGE
 }
 
-
 void ACMDebug::Init()
 {
 	Serial.begin( SERIAL_SPEED );

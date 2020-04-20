@@ -19,8 +19,15 @@ public:
 		}
 	}
 
-	Iterator<T> CreateIterator();
-	ConstIterator<T> CreateConstIterator();
+	Iterator<T> CreateIterator()
+	{
+		return Iterator<T>( static_cast<T*>( this ) );
+	}
+
+	ConstIterator<T> CreateConstIterator()
+	{
+		return ConstIterator<T>( static_cast<T*>( this ) );
+	}
 
 protected:
 	T* next;
@@ -34,7 +41,10 @@ class ConstIterator
 {
 public:
 	const T* Next();
-	const T* Value();
+	const T* Value()
+	{
+		return current;
+	}
 
 private:
 	ConstIterator( const T* );
@@ -50,7 +60,10 @@ class Iterator
 {
 public:
 	T* Next();
-	T* Value();
+	T* Value()
+	{
+		return current;
+	}
 
 	void Remove();
 
@@ -67,18 +80,6 @@ template<typename T>
 Iterable<T>::Iterable() :
 	next( nullptr )
 {}
-
-template<typename T>
-Iterator<T> Iterable<T>::CreateIterator()
-{
-	return Iterator<T>( static_cast<T*>( this ) );
-}
-
-template<typename T>
-ConstIterator<T> Iterable<T>::CreateConstIterator()
-{
-	return ConstIterator<T>( static_cast<T*>( this ) );
-}
 
 template<typename T>
 ConstIterator<T>::ConstIterator( const T* obj ) :
@@ -98,12 +99,6 @@ const T* ConstIterator<T>::Next()
 }
 
 template<typename T>
-const T* ConstIterator<T>::Value()
-{
-	return current;
-}
-
-template<typename T>
 Iterator<T>::Iterator( T* obj ) :
 	prev( nullptr ), current( obj )
 {}
@@ -117,12 +112,6 @@ T* Iterator<T>::Next()
 		current = current->next;
 	}
 
-	return current;
-}
-
-template<typename T>
-T* Iterator<T>::Value()
-{
 	return current;
 }
 

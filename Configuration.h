@@ -4,12 +4,11 @@
 #ifndef __CONFIGURATION_H__
 #define __CONFIGURATION_H__
 
+// Debug mode
 //#define ACMDEBUG
 
-#ifndef LONG_MESSAGES
-	typedef byte MESSAGE_INT;
-#else
-	typedef word MESSAGE_INT;
-#endif
+// Base messages supports 255 different messages
+// Long messages supports 65535
+//#define LONG_MESSAGES
 
 #endif

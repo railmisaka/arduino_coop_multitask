@@ -25,13 +25,9 @@
 		Serial.print( __tmp ); \
 	}
 
-#define DEBUG_PRINTLN_STRING( STRING ) { \
-		Serial.println( STRING ); \
-	}
+#define DEBUG_PRINTLN_STRING( STRING ) Serial.println( STRING );
 
-#define DEBUG_PRINT_STRING( STRING ) { \
-		Serial.print( STRING ); \
-	}
+#define DEBUG_PRINT_STRING( STRING ) Serial.print( STRING );
 
 #define MESSAGE_CODE_TO_TEXT( CODE ) __ACMDebug.getStringByCode( CODE )
 

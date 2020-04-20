@@ -7,7 +7,7 @@
 #define __TASK_BASE_H__
 
 #include "Common.h"
-#include "DeltaTime.h"
+#include "Time.h"
 
 class TaskDispatcher;
 
@@ -56,7 +56,7 @@ private:
 	TaskDispatcher();
 	static TaskDispatcher *instance;
 
-	// registered tasks
+	// Registered tasks
 	TaskBase *tasks_first;
 	TaskBase *tasks_last;
 };
