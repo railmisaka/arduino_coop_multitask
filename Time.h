@@ -5,7 +5,27 @@
 #define __TIMERS_H__
 
 #include "Common.h"
-#include "DeltaTime.h"
+#include "Time.h"
+
+class DeltaTime
+{
+public:
+	static DeltaTime* GetInstance();
+
+	void Loop();
+
+	tTime GetDeltaTime() const
+	{
+		return stepTime;
+	}
+
+private:
+	DeltaTime();
+	static DeltaTime *instance;
+
+	tTime prevTime;
+	tTime stepTime;
+};
 
 class TimerBase;
 
